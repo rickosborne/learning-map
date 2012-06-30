@@ -1,0 +1,7 @@
+Magical auto-generating learning maps based on HTML lists.
+
+Uses jQuery (1.7-ish) and the jQuery SVG plugin by Keith Wood:
+  http://keith-wood.name/svg.html
+
+Uses the same GPL license as jQuery and jQuery SVG.  See those projects for details.
+

@@ -1,0 +1,85 @@
+@import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
+
+.map-set-word-know { color: #A6A9AC; }
+.map-set-word-show { color: #EA5E24; }
+.map-set-word-research { color: #67A443; }
+.map-set-word-build { color: #0264A2; }
+.map-set-word-beyond { color: #A84724; }
+
+.learning-map-wrap {
+    position: relative;
+}
+
+/* increased specificity to override fso */
+ol.learning-map {
+    overflow-x: auto;
+    margin: 0;
+    font-size: 100%;
+    line-height: 1.5em;
+    font-family: 'Ubuntu Condensed', sans-serif;
+    position: relative;
+}
+
+.learning-map-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+ol.learning-map, ol.map-items {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.activity ol.learning-map li.learning-map-set {
+    position: relative;
+    float: left;
+    top: 0;
+    list-style: none;
+    margin: 0 -100% 0 0; /* Yeah, that just looks awful */
+}
+
+/* 5-column rules */
+.activity ol.learning-map li.learning-map-set { width: 17%; }
+.activity ol.learning-map li.learning-map-set1 { left: 20.5%; }
+.activity ol.learning-map li.learning-map-set2 { left: 41%; }
+.activity ol.learning-map li.learning-map-set3 { left: 61.5%; }
+.activity ol.learning-map li.learning-map-set4 { left: 82%; }
+
+/* 4-column rules */
+.activity ol.learning-map-col4 li.learning-map-set { width: 22%; }
+.activity ol.learning-map-col4 li.learning-map-set1 { left: 25.666666%; }
+.activity ol.learning-map-col4 li.learning-map-set2 { left: 51.333333%; }
+.activity ol.learning-map-col4 li.learning-map-set3 { left: 77%; }
+
+/* 3-column rules */
+.activity ol.learning-map-col3 li.learning-map-set { width: 30%; }
+.activity ol.learning-map-col3 li.learning-map-set1 { left: 34.5%; }
+.activity ol.learning-map-col3 li.learning-map-set2 { left: 69%; }
+
+/* 2-column rules */
+.activity ol.learning-map-col2 li.learning-map-set { width: 48%; }
+.activity ol.learning-map-col2 li.learning-map-set1 { left: 52%; }
+
+.activity ol.learning-map li.map-item {
+    background-color: #D1D2D3;
+    border: none;
+    border-left: 0.5em solid #D1D2D3;
+    padding: 0.5em;
+    list-style: none;
+    margin: 0 0 1em 0;
+}
+.activity ol.learning-map li.map-item-know { border-left-color: #A6A9AC; }
+.activity ol.learning-map li.map-item-show { border-left-color: #EA5E24; }
+.activity ol.learning-map li.map-item-research { border-left-color: #67A443; }
+.activity ol.learning-map li.map-item-build { border-left-color: #0264A2; }
+.activity ol.learning-map li.map-item-beyond { border-left-color: #A84724; }
+
+.activity .learning-map a {
+    display: block;
+    text-decoration: none;
+    color: black;
+}
