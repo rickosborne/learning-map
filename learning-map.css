@@ -1,5 +1,6 @@
+/*
 @import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
-
+*/
 .map-set-word-know { color: #A6A9AC; }
 .map-set-word-show { color: #EA5E24; }
 .map-set-word-research { color: #67A443; }
@@ -16,7 +17,7 @@ ol.learning-map {
     margin: 0;
     font-size: 100%;
     line-height: 1.5em;
-    font-family: 'Ubuntu Condensed', sans-serif;
+    /* font-family: 'Ubuntu Condensed', sans-serif; */
     position: relative;
 }
 

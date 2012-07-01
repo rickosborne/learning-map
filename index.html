@@ -24,45 +24,45 @@
                         <li>
                             You should know
                             <ol>
-                                <li id="header-files">Header .h Files</li>
-                                <li id="impl-files">Implementation .m Files</li>
-                                <li id="functions">Functions</li>
-                                <li id="variable-scopes">Variable Scopes</li>
+                                <li>Header .h Files</li>
+                                <li>Implementation .m Files</li>
+                                <li>Functions</li>
+                                <li>Variable Scopes</li>
                                 <li>Debug Logging</li>
                             </ol>
                         </li>
                         <li>
                             We will show you
                             <ol>
-                                <li data-followsone="header-files impl-files" id="custom-classes">Custom Classes</li>
-                                <li data-followsone="custom-classes" id="inheritance">Inheritance</li>
-                                <li data-followsone="functions variable-scopes" id="private-methods">Private Methods</li>
-                                <li data-followsone="private-methods variable-scopes" id="static-methods">Static Methods</li>
+                                <li>Custom Classes (Requires: Header .h Files, Implementation .m Files)</li>
+                                <li>Inheritance (Builds on: Custom Classes)</li>
+                                <li>Instance Methods (Builds on: Functions, Variable Scopes)</li>
+                                <li>Class Methods (Builds on: Variable Scopes)</li>
                             </ol>
                         </li>
                         <li>
                             You will research
                             <ol>
-                                <li data-followsone="static-methods" id="singleton-pattern">Singleton Pattern</li>
-                                <li data-followsone="singleton-pattern" id="factory-pattern">Factory Pattern</li>
+                                <li>Singleton Pattern (Requires: Class Methods)</li>
+                                <li>Factory Pattern (Commonly uses: Singleton Pattern)</li>
                             </ol>
                         </li>
                         <li>
                             You will build
                             <ol>
-                                <li data-followsone="custom-classes" id="base-class">Base Class</li>
-                                <li data-followsone="base-class inheritance">Subclasses</li>
-                                <li data-followsone="base-class">Instantiate Objects</li>
-                                <li data-followsone="private-methods" id="declare-methods">Declare Methods</li>
-                                <li data-followsone="declare-methods">Override Methods</li>
-                                <li id="call-methods">Call Methods</li>
-                                <li data-followsone="factory-pattern call-methods">Factory Singleton</li>
+                                <li>Base Class (Based on: Custom Classes)</li>
+                                <li>Subclasses (Requires: Base Class, Inheritance)</li>
+                                <li>Instantiate Objects (From: Subclasses)</li>
+                                <li>Declare Methods (Builds on: Instance Methods)</li>
+                                <li>Override Methods (Requires: Declare Methods)</li>
+                                <li>Call Methods (Uses: Override Methods)</li>
+                                <li>Factory Singleton (Requires: Factory Pattern, Call Methods)</li>
                             </ol>
                         </li>
                         <li>
                             You can go beyond
                             <ol>
-                                <li data-followsone="declare-methods">Categories</li>
+                                <li>Categories (Enhances: Declare Methods)</li>
                             </ol>
                         </li>
                     </ol>
