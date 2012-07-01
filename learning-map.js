@@ -20,7 +20,8 @@ $(function(){
     }
     var mapTypesRE = new RegExp("\\b(" + englishTypes.join("|") + ")\\b", "i");
     var whitespaceRE = /^\s*$/;
-    var trim = function(s) { return s.replace(/^\s+|\s+$/g, ''); }
+    var followsRE = /\s*\([^:]+\:\s*([^)]+)\)/;
+    var trim = function(s) { return s.replace(/^\s+|\s+$/g, '').replace(/\s\s+/g, ' '); }
     var positionRelativeTo = function(anc, desc) {
         var ancOff = $(anc).offset();
         var descOff = $(desc).offset();
@@ -37,6 +38,7 @@ $(function(){
             .wrap('<div class="learning-map-wrap" />')
         ;
         var lines = [];
+        var itemTitles = {};
         // top-level categories
         $(ol).children('li').each(function(liN,li) {
             $(li).addClass('learning-map-set').addClass('learning-map-set' + liN);
@@ -62,44 +64,58 @@ $(function(){
                     .children('li')
                     .addClass('map-item')
                     .each(function(miN,mi){
-                        $(mi)
-                            .addClass('map-item' + miN)
-                            // .wrap('<a href="#" />')
-                        ;
+                        $(mi).addClass('map-item' + miN);
+                        var following = [];
+                        // Try to use attributes and IDs first
                         var followsOneId = $(mi).attr('data-followsone');
                         if (followsOneId) {
-                            $.each(followsOneId.split(/\s+/), function(followN, followsOneId){
-                                var followed = $('#' + followsOneId);
-                                if (followed.length == 1) {
-                                    followed = followed[0];
-                                    // are they in the different columns?
-                                    if (followed.parentElement != mi.parentElement) {
-                                        var offset = positionRelativeTo(mi, followed);
-                                        var fixed = $(mi).attr('data-fixed');
-                                        $(mi).attr('data-fixed', true);
-                                        if (!fixed && (offset.top > 0)) {
-                                            var ps = $(mi).prev('li');
-                                            offset.top += parseInt($(mi).css('marginTop').replace('px',''));
-                                            if (ps.length) {
-                                                offset.top += parseInt($(ps).css('marginBottom').replace('px',''));
-                                            }
-                                            $(mi).css('margin-top', offset.top + 'px');
-                                        }
-                                    }
-                                    lines.push({
-                                        "type": "one",
-                                        "from": followed,
-                                        "to": mi
-                                    });
+                            $.each(followsOneId.split(/\s+/), function(followN, followId) {
+                                var followed = document.getElementById(followId);
+                                if (followed) {
+                                    following.push(followed);
                                 }
                             });
                         }
+                        // Try to use the prose
+                        var itemText = trim($(mi).text());
+                        var itemFollows = followsRE.exec(itemText);
+                        if (itemFollows) {
+                            itemText = itemText.replace(followsRE, '');
+                            $(mi).text(itemText);
+                            $.each(itemFollows[1].split(/\s*[,;]\s*/), function(followN, followTitle) {
+                                followTitle = trim(followTitle).toLowerCase();
+                                if (itemTitles[followTitle]) {
+                                    following.push(itemTitles[followTitle]);
+                                }
+                            });
+                        }
+                        itemTitles[itemText.toLowerCase()] = mi;
+                        $.each(following, function(followN, followed){
+                            // are they in different columns?
+                            if (followed.parentElement != mi.parentElement) {
+                                var offset = positionRelativeTo(mi, followed);
+                                var fixed = $(mi).attr('data-fixed');
+                                $(mi).attr('data-fixed', true);
+                                if (!fixed && (offset.top > 0)) {
+                                    var ps = $(mi).prev('li');
+                                    offset.top += parseInt($(mi).css('marginTop').replace('px',''));
+                                    if (ps.length) {
+                                        offset.top += parseInt($(ps).css('marginBottom').replace('px',''));
+                                    }
+                                    $(mi).css('margin-top', offset.top + 'px');
+                                }
+                            }
+                            lines.push({
+                                "type": "one",
+                                "from": followed,
+                                "to": mi
+                            });
+                        });
                     })
                 ;
             } // if we found text
         }); // each category
         if (lines.length) {
-            console.log(lines);
             var svgWrap = $('<div class="learning-map-svg"></div>');
             $(ol).parent().prepend(svgWrap);
             $(svgWrap).height($(ol).height())
@@ -110,7 +126,6 @@ $(function(){
                     svg.path(arrow, "M 0 0 L 4 2 L 0 4 z");
                     var linesLayer = svg.group({stroke: "#999999", strokeWidth: 1});
                     $.each(lines, function(lineN, line) {
-                        console.log(line);
                         if (line.type === "one") {
                             var fromPos = positionRelativeTo(ol, line.from);
                             var toPos = positionRelativeTo(ol, line.to);
@@ -171,7 +186,10 @@ $(function(){
                                 svg.line(linesLayer, fromPos.left, fromPos.top, toPos.left, toPos.top, { "marker-end": "url(#arrow)"});
                             }
                         }
-                    });
+                        // try to prevent reference counting issues
+                        line.from = null;
+                        line.to = null;
+                    }); // each line
                 } // onLoad
             }); // svg attach
         }
