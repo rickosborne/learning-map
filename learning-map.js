@@ -91,6 +91,9 @@ $(function(){
                                     following.push(itemTitles[followTitle]);
                                 }
                             });
+                            if ((setType == "research") && ($('a', mi).length == 0)) {
+                                $(mi).wrapInner('<a href="http://lmgtfy.com/?q=' + encodeURIComponent(itemText.toLowerCase()) + '" target="_blank" rel="external"/>');
+                            }
                         }
                         itemTitles[itemText.toLowerCase()] = mi;
                         $.each(following, function(followN, followed){
