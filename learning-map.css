@@ -83,4 +83,11 @@ ol.learning-map, ol.map-items {
     display: block;
     text-decoration: none;
     color: black;
+    padding: 0.5em; /* yeah, whatcha gonna do about it? */
+    margin: -0.5em;
+}
+.activity .learning-map a:hover {
+    color: blue;
+    text-decoration: underline;
+    background-color: #d1d2ff;
 }

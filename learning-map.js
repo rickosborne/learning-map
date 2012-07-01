@@ -81,7 +81,10 @@ $(function(){
                         var itemFollows = followsRE.exec(itemText);
                         if (itemFollows) {
                             itemText = itemText.replace(followsRE, '');
-                            $(mi).text(itemText);
+                            // try harder to make sure we're removing just text, not child nodes
+                            $(mi).contents(':contains("' + itemFollows[1] + '")').each(function(textN, textEl) {
+                                textEl.textContent = textEl.textContent.replace(followsRE, '');
+                            });
                             $.each(itemFollows[1].split(/\s*[,;]\s*/), function(followN, followTitle) {
                                 followTitle = trim(followTitle).toLowerCase();
                                 if (itemTitles[followTitle]) {
