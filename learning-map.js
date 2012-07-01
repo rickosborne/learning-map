@@ -117,6 +117,7 @@ $(function(){
                             var fromHeight = $(line.from).outerHeight();
                             var toHeight = $(line.to).outerHeight();
                             var fromWidth = $(line.from).outerWidth();
+                            var isPath = false;
                             if (fromPos.left == toPos.left) {
                                 // same column
                                 fromPos.left += 3;
@@ -141,13 +142,34 @@ $(function(){
                                 else if ((fromPos.top > toPos.top) && (toPos.top + toHeight > fromPos.top)) {
                                     fromPos.top = fromPos.top + Math.floor((toPos.top + toHeight - fromPos.top) / 2)
                                 }
+                                else if (toPos.top > fromPos.top) {
+                                    toPos.top += Math.floor(toHeight / 3);
+                                    fromPos.top += Math.floor(2.0 * fromHeight / 3);
+                                    isPath = true;
+                                }
+                                else if (fromPos.top > toPos.top) {
+                                    fromPos.top += Math.floor(fromHeight / 3);
+                                    toPos.top += Math.floor(2.0 * toHeight / 3);
+                                    isPath = true;
+                                }
                                 else {
                                     fromPos.top += Math.floor(fromHeight / 2);
                                     toPos.top += Math.floor(toHeight / 2);
+                                    isPath = true;
                                 }
                             }
-                            svg.line(linesLayer, fromPos.left, fromPos.top, toPos.left, toPos.top, { "marker-end": "url(#arrow)"});
-                            console.log(fromPos, toPos);
+                            if (isPath) {
+                                var midX = Math.floor((toPos.left + fromPos.left) / 2);
+                                svg.polyline(linesLayer, [
+                                    [fromPos.left, fromPos.top],
+                                    [midX, fromPos.top],
+                                    [midX, toPos.top],
+                                    [toPos.left, toPos.top]
+                                ], { fill: "none", "marker-end": "url(#arrow)"});
+                            }
+                            else {
+                                svg.line(linesLayer, fromPos.left, fromPos.top, toPos.left, toPos.top, { "marker-end": "url(#arrow)"});
+                            }
                         }
                     });
                 } // onLoad
