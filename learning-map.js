@@ -11,6 +11,11 @@ $(function(){
         "build": "build", "create": "build", "make": "build",
         "beyond": "beyond", "additional": "beyond", "extra": "beyond"
     };
+    var CONST = {
+        ARROW_SPACE: 2, // how far away from the box does the arrow start?
+        ARROW_INSET: 3, // for same-column arrows, how far left is the arrow?
+        TAIL_ADJUST: 1.0 / 4.0 // split multiplier for multiple tails, 1/2 is no split
+    };
     // You should not need to change anything after this line
     var englishTypes = [];
     for (var englishWord in catFromWord) {
@@ -136,6 +141,7 @@ $(function(){
             } // if we found text
         }); // each category
         if (lines.length) {
+            $('.learning-map-svg', ol).remove();
             var svgWrap = $('<div class="learning-map-svg"></div>');
             $(ol).parent().prepend(svgWrap);
             $(svgWrap).height($(ol).height())
@@ -155,21 +161,21 @@ $(function(){
                             var isPath = false;
                             if (fromPos.left == toPos.left) {
                                 // same column
-                                fromPos.left += 3;
-                                toPos.left += 3;
-                                fromPos.top += 2 + fromHeight;
-                                toPos.top -= 2;
+                                fromPos.left += CONST.ARROW_INSET;
+                                toPos.left += CONST.ARROW_INSET;
+                                fromPos.top += fromHeight + CONST.ARROW_SPACE;
+                                toPos.top -= CONST.ARROW_SPACE;
                             }
                             else if(fromPos.top == toPos.top) {
                                 // different columns
                                 fromPos.top += Math.floor(Math.min(fromHeight, toHeight) / 2);
                                 toPos.top = fromPos.top;
-                                fromPos.left += 2 + fromWidth;
-                                toPos.left -= 2;
+                                fromPos.left += fromWidth + CONST.ARROW_SPACE;
+                                toPos.left -= CONST.ARROW_SPACE;
                             }
                             else {
-                                fromPos.left += 2 + fromWidth;
-                                toPos.left -= 2;
+                                fromPos.left += fromWidth + CONST.ARROW_SPACE;
+                                toPos.left -= CONST.ARROW_SPACE;
                                 if ((toPos.top > fromPos.top) && (fromPos.top + fromHeight > toPos.top)) {
                                     fromPos.top = toPos.top + Math.floor((fromPos.top + fromHeight - toPos.top) / 2);
                                     toPos.top = fromPos.top;
@@ -178,18 +184,18 @@ $(function(){
                                     fromPos.top = fromPos.top + Math.floor((toPos.top + toHeight - fromPos.top) / 2)
                                 }
                                 else if (toPos.top > fromPos.top) {
-                                    toPos.top += Math.floor(toHeight / 3);
-                                    fromPos.top += Math.floor(2.0 * fromHeight / 3);
+                                    toPos.top += Math.floor(toHeight * CONST.TAIL_ADJUST);
+                                    fromPos.top += Math.floor(fromHeight * (1 - CONST.TAIL_ADJUST));
                                     isPath = true;
                                 }
                                 else if (fromPos.top > toPos.top) {
-                                    fromPos.top += Math.floor(fromHeight / 3);
-                                    toPos.top += Math.floor(2.0 * toHeight / 3);
+                                    fromPos.top += Math.floor(fromHeight * CONST.TAIL_ADJUST);
+                                    toPos.top += Math.floor(toHeight * (1 - CONST.TAIL_ADJUST));
                                     isPath = true;
                                 }
                                 else {
-                                    fromPos.top += Math.floor(fromHeight / 2);
-                                    toPos.top += Math.floor(toHeight / 2);
+                                    fromPos.top += Math.floor(fromHeight * CONST.TAIL_ADJUST);
+                                    toPos.top += Math.floor(toHeight * (1 - CONST.TAIL_ADJUST));
                                     isPath = true;
                                 }
                             }
