@@ -73,6 +73,7 @@ ol.learning-map, ol.map-items {
     list-style: none;
     margin: 0 0 1em 0;
 }
+.activity ol.learning-map li.map-item-unknown { border-left-color: #756f61; }
 .activity ol.learning-map li.map-item-know { border-left-color: #A6A9AC; }
 .activity ol.learning-map li.map-item-show { border-left-color: #EA5E24; }
 .activity ol.learning-map li.map-item-research { border-left-color: #67A443; }

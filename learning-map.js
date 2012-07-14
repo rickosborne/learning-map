@@ -47,21 +47,24 @@ $(function(){
                 var setTitle = trim(liText[0].textContent);
                 var setMatch = mapTypesRE.exec(setTitle);
                 var setType = '';
-                if (setMatch.length > 0) {
+                
+                if (setMatch && (setMatch.length > 0)) {
                     setType = catFromWord[setMatch[0].toLowerCase()];
-                    $(li)
-                        .addClass('map-set-' + setType)
-                        .children('ol, ul')
-                        .children('li')
-                        .addClass('map-item-' + setType)
-                    ;
-                    setTitle = setTitle.replace(mapTypesRE, '<span class="map-set-word-' + setType + '">$1</span>');
-                    $(liText).replaceWith(setTitle);
+                } else {
+                    setType = 'unknown';
                 }
                 $(li)
-                    .children('ol, ul')
+                    .addClass('map-set-' + setType)
+                    .children('ol, ul, dl')
+                    .children('li, dt, dd')
+                    .addClass('map-item-' + setType)
+                ;
+                setTitle = setTitle.replace(mapTypesRE, '<span class="map-set-word-' + setType + '">$1</span>');
+                $(liText).replaceWith(setTitle);
+                $(li)
+                    .children('ol, ul, dl')
                     .addClass('map-items')
-                    .children('li')
+                    .children('li, dt, dl')
                     .addClass('map-item')
                     .each(function(miN,mi){
                         $(mi).addClass('map-item' + miN);
@@ -96,19 +99,30 @@ $(function(){
                             }
                         }
                         itemTitles[itemText.toLowerCase()] = mi;
+                        var adjustPosition = function (target, newOffset) {
+                            var ps = $(target).prev('li, dt, dd');
+                            newOffset += parseInt($(target).css('marginTop').replace('px',''));
+                            if (ps.length) {
+                                newOffset += parseInt($(ps).css('marginBottom').replace('px',''));
+                            }
+                            $(target).css('margin-top', newOffset + 'px');
+                        };
                         $.each(following, function(followN, followed){
                             // are they in different columns?
                             if (followed.parentElement != mi.parentElement) {
                                 var offset = positionRelativeTo(mi, followed);
-                                var fixed = $(mi).attr('data-fixed');
-                                $(mi).attr('data-fixed', true);
-                                if (!fixed && (offset.top > 0)) {
-                                    var ps = $(mi).prev('li');
-                                    offset.top += parseInt($(mi).css('marginTop').replace('px',''));
-                                    if (ps.length) {
-                                        offset.top += parseInt($(ps).css('marginBottom').replace('px',''));
+                                var afterIsFixed = $(mi).attr('data-fixed'),
+                                    beforeIsFixed = $(followed).attr('data-fixed');
+                                if (!afterIsFixed) {
+                                    $(mi).attr('data-fixed', true);
+                                    var ps;
+                                    if (offset.top > 0) {
+                                        adjustPosition(mi, offset.top);
+                                    } else if(!beforeIsFixed && (offset.top < 0) && (following.length == followN + 1)) {
+                                        console.log("back-adjusting " + $(followed).text() + offset.top);
+                                        $(followed).attr('data-fixed', true);
+                                        adjustPosition(followed, 0 - offset.top);
                                     }
-                                    $(mi).css('margin-top', offset.top + 'px');
                                 }
                             }
                             lines.push({
