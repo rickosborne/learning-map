@@ -1,6 +1,21 @@
-/*
-@import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
-*/
+/* http://keith-wood.name/svg.html
+   SVG for jQuery v1.4.5.
+   Written by Keith Wood (kbwood{at}iinet.com.au) August 2007.
+   Dual licensed under the GPL (http://dev.jquery.com/browser/trunk/jquery/GPL-LICENSE.txt) and
+   MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses.
+   Please attribute the author if you use it. */
+
+svg\:svg {
+	display: none;
+}
+
+.svg_error {
+	color: red;
+	font-weight: bold;
+}
+
+/* The rest is via Rick Osborne */
+.learning-map-canary { display: none; }
 .map-set-word-know { color: #A6A9AC; }
 .map-set-word-show { color: #EA5E24; }
 .map-set-word-research { color: #67A443; }
@@ -13,8 +28,8 @@
 
 /* increased specificity to override fso */
 ol.learning-map {
-    overflow-x: auto;
     margin: 0;
+    overflow-x: auto;    
     font-size: 100%;
     line-height: 1.5em;
     /* font-family: 'Ubuntu Condensed', sans-serif; */
