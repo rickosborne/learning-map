@@ -5,8 +5,8 @@
 ;
 (function(basePath){
     "use strict";
-    $.getScript(basePath + 'jquery.svg.js');
-    $.getScript(basePath + 'jquery.svgdom.js');
+    // $.getScript(basePath + 'jquery.svg.js');
+    // $.getScript(basePath + 'jquery.svgdom.js');
     window.setTimeout(function(){
         // console.log('loading css');
         if (document.createStyleSheet) {
@@ -240,6 +240,7 @@ $(function(){
                                 .parent().width(minWidth);
                         }
                         $(svgWrap).height(minHeight).width(minWidth);
+                        /*
                         $(svgWrap).svg({
                             onLoad: function(svg) {
                                 var defs = svg.defs();
@@ -352,6 +353,7 @@ $(function(){
                                 }); // each line
                             } // onLoad
                         }); // svg attach
+                        */
                     },1);
                 }
             }); // each map
